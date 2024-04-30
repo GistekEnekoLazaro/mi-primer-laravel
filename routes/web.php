@@ -22,3 +22,5 @@ require __DIR__.'/auth.php';
 
 
 Route::get('/ideas', [IdeaController::class, 'index'])->name('idea.index');
+Route::get('/ideas/crear', [IdeaController::class, 'create'])->name('idea.create');
+Route::post('/ideas/crear', [IdeaController::class, 'store'])->name('idea.store');

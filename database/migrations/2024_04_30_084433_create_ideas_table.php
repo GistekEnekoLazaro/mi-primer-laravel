@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('titulo');
             $table->text('descripcion');
-            $table->integer('likes');
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
     }
