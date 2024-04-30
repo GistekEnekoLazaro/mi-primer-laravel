@@ -33,7 +33,7 @@
                                             <x-dropdown-link :href="$myroute='zzz'">
                                                 Ver
                                             </x-dropdown-link>
-                                            <x-dropdown-link :href="route('idea.edit', $idea->id)">
+                                            <x-dropdown-link :href="route('idea.edit', $idea)">
                                                 Editar
                                             </x-dropdown-link>
                                             <form method="POST" action="">

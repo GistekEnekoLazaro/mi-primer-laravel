@@ -24,21 +24,21 @@ class IdeaController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'title'=>'required|string|max:100',
-            'description'=>'required|string|max:300',
+            'title' => 'required|string|max:100',
+            'description' => 'required|string|max:300',
         ]);
-        
+
         Idea::create([
-            'user_id'=> auth()->user()->id,
-            'titulo'=> $validated['title'],
-            'descripcion'=> $validated['title'],
+            'user_id' => auth()->user()->id, //$request->user()->id
+            'titulo' => $validated['title'],
+            'descripcion' => $validated['description'],
         ]);
 
         return redirect()->route('idea.index');
     }
 
-    public function edit(Idea $id): View
+    public function edit(Idea $idea): View
     {
-        return view('ideas.create_or_edit')->with('idea', $id);
+        return view('ideas.create_or_edit')->with('idea', $idea);
     }
 }
