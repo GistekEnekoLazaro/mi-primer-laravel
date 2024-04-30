@@ -24,13 +24,13 @@ class IdeaController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:100',
-            'description' => 'required|string|max:300',
+            'titulo' => 'required|string|max:100',
+            'descripcion' => 'required|string|max:300',
         ]);
 
         Idea::create([
             'user_id' => auth()->user()->id, //$request->user()->id
-            'titulo' => $validated['title'],
+            'titulo' => $validated['titulo'],
             'descripcion' => $validated['description'],
         ]);
 
@@ -40,5 +40,17 @@ class IdeaController extends Controller
     public function edit(Idea $idea): View
     {
         return view('ideas.create_or_edit')->with('idea', $idea);
+    }
+
+    public function update(Request $request, Idea $idea): RedirectResponse
+    {
+        $validated = $request->validate([
+            'titulo' => 'required|string|max:100',
+            'descripcion' => 'required|string|max:300',
+        ]);
+
+        $idea->update($validated);
+
+        return redirect(route('idea.index'));
     }
 }
