@@ -53,4 +53,9 @@ class IdeaController extends Controller
 
         return redirect(route('idea.index'));
     }
+
+    public function show(Idea $idea): View
+    {
+        return view('ideas.show')->with('idea', $idea);
+    }
 }
