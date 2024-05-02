@@ -11,7 +11,7 @@ class Idea extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'titulo', 'descripcion'];
+    protected $fillable = ['user_id', 'titulo', 'descripcion', 'likes'];
 
     protected $casts = ['created_at' => 'datetime'];
 

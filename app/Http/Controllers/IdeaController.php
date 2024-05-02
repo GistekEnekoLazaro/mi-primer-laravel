@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
+use function Laravel\Prompts\select;
+
 class IdeaController extends Controller
 {
 
@@ -76,5 +78,27 @@ class IdeaController extends Controller
         session()->flash('message', 'Idea borrada correctamente');
 
         return redirect()->route('idea.index');
+    }
+
+    public function syncronizeLikes(Request $request, Idea $idea): RedirectResponse
+    {
+        $request->user()->ideaLiked()->toggle([$idea->id]);
+
+        $idea->update(['likes' => $idea->users()->count()]);
+
+        return redirect(route('idea.show', $idea));
+    }
+
+    public function syncronizeLikesIndex(Request $request, $idea_id): RedirectResponse
+    {
+
+        $idea = Idea::where('id',$idea_id)->first();
+
+        $request->user()->ideaLiked()->toggle([$idea_id]);
+
+
+        $idea->update(['likes' => $idea->users()->count()]);
+
+        return redirect(route('idea.index'));
     }
 }
