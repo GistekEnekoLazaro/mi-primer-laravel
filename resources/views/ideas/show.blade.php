@@ -16,11 +16,11 @@
                                     Dar Like
                                 </x-primary-button>
                             @else
-                                <x-primary-button>
-                                    <x-likenegroabajo></x-likenegroabajo>
+                                <x-secondary-button>
+                                    <x-likeabajo></x-likeabajo>
                                     &nbsp;&nbsp;
                                     Quitar Like
-                                </x-primary-button>
+                                </x-secondary-button>
                             @endif
                             <a href="{{route('idea.index')}}" class="dark:text-gray-100">Atras</a>
                         </div>
