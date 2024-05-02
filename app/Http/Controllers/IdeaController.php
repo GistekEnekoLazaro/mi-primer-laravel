@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Models\Ideas;
+use App\Models\User;
 
-use function Laravel\Prompts\select;
 
 class IdeaController extends Controller
 {
@@ -50,13 +50,21 @@ class IdeaController extends Controller
         return redirect()->route('idea.index');
     }
 
-    public function edit(Idea $idea): View
+    public function edit(Request $request,Idea $idea): View
     {
+        if ($request->user()->cannot('update', $idea)) {
+            abort(403);
+        }
+
         return view('ideas.create_or_edit')->with('idea', $idea);
     }
 
     public function update(Request $request, Idea $idea): RedirectResponse
     {
+        if ($request->user()->cannot('update', $idea)) {
+            abort(403);
+        }
+
         $validated = $request->validate($this->rules, $this->errorMessages);
 
         $idea->update($validated);
@@ -71,8 +79,12 @@ class IdeaController extends Controller
         return view('ideas.show')->with('idea', $idea);
     }
 
-    public function delete(Idea $idea): RedirectResponse
+    public function delete(Request $request,Idea $idea): RedirectResponse
     {
+        if ($request->user()->cannot('delete', $idea)) {
+            abort(403);
+        }
+
         $idea->delete();
 
         session()->flash('message', 'Idea borrada correctamente');
@@ -82,23 +94,31 @@ class IdeaController extends Controller
 
     public function syncronizeLikes(Request $request, Idea $idea): RedirectResponse
     {
-        $request->user()->ideaLiked()->toggle([$idea->id]);
+        if ($request->user()->cannot('like', $idea)) {
+            return redirect(route('idea.show', $idea))->with('error', 'No puedes darte me gusta a ti mismo');
+        } else {
+            $request->user()->ideaLiked()->toggle([$idea->id]);
 
-        $idea->update(['likes' => $idea->users()->count()]);
+            $idea->update(['likes' => $idea->users()->count()]);
 
-        return redirect(route('idea.show', $idea));
+            return redirect(route('idea.show', $idea));
+        }
     }
 
     public function syncronizeLikesIndex(Request $request, $idea_id): RedirectResponse
     {
+        if ($request->user()->cannot('like', $idea_id)) {
+            return redirect(route('idea.index', $idea_id))->with('error', 'No puedes darte me gusta a ti mismo');
+        } else {
+            $idea = Idea::where('id',$idea_id)->first();
 
-        $idea = Idea::where('id',$idea_id)->first();
-
-        $request->user()->ideaLiked()->toggle([$idea_id]);
+            $request->user()->ideaLiked()->toggle([$idea_id]);
 
 
-        $idea->update(['likes' => $idea->users()->count()]);
+            $idea->update(['likes' => $idea->users()->count()]);
 
-        return redirect(route('idea.index'));
+            return redirect(route('idea.index'));
+        }
+
     }
 }

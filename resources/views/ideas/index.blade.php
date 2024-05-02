@@ -6,6 +6,11 @@
                     <span class="text-xl font-semibold text-indigo-600">{{ session('message') }}</span>
                 </div>
             @endif
+            @if(session()->has('error'))
+                <div class="p-2 text-center bg-gray-100 rounded-md">
+                    <span class="text-xl font-semibold text-indigo-600">{{ session('error') }}</span>
+                </div>
+            @endif
             <div class="mb-4 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 space-x-8 text-gray-900 dark:text-gray-100s">
                     <a href="{{route('idea.create')}}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Crear</a>

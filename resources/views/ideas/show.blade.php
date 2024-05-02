@@ -1,7 +1,12 @@
 <x-app-layout>
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+            @if(session()->has('error'))
+                <div class="p-2 text-center bg-gray-100 rounded-md">
+                    <span class="text-xl font-semibold text-indigo-600">{{ session('error') }}</span>
+                </div>
+            @endif
+            <div class="mt-4 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1 class="pb-3 text-xl">{{ $idea->titulo }}</h1>
                     <p>{{ $idea->descripcion }}</p>
