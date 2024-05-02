@@ -1,13 +1,21 @@
 <x-app-layout>
+    <style>
+        @media (max-width: 700px) {
+            #mensaje {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+    </style>
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             @if(session()->has('message'))
-                <div class="p-2 text-center bg-gray-100 rounded-md">
+                <div class="p-2 text-center bg-gray-100 rounded-md" id="mensaje">
                     <span class="text-xl font-semibold text-indigo-600">{{ session('message') }}</span>
                 </div>
             @endif
             @if(session()->has('error'))
-                <div class="p-2 text-center bg-gray-100 rounded-md">
+                <div class="p-2 text-center bg-gray-100 rounded-md" id="mensaje">
                     <span class="text-xl font-semibold text-indigo-600">{{ session('error') }}</span>
                 </div>
             @endif
@@ -62,20 +70,28 @@
                                 @endauth
                             </div>
                             <p class="mt-3 text-lg text-gray-900 dark:text-gray-100">{{ $idea->titulo }}</p>
-                            <form method="POST" action="{{ route('idea.likeIndex', $idea->id) }}">
-                                @csrf
-                                @method('put')
-                                <button>
+                            @can('like', $idea)
+                                <form method="POST" action="{{ route('idea.likeIndex', $idea->id) }}">
+                                    @csrf
+                                    @method('put')
+                                    <button>
+                                    <small class="flex mt-3 text-sm text-gray-400">
+                                        @if(auth()->user()->iLikeIt($idea->id))
+                                        <x-like></x-like>
+                                        <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}&nbsp;&nbsp;&nbsp;Te gusta</span>
+                                        @else
+                                        <x-like></x-like>
+                                        <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}</span>
+                                        @endif
+                                    </small>
+                                </form>
+                            @endcan
+                            @cannot('like', $idea)
                                 <small class="flex mt-3 text-sm text-gray-400">
-                                    @if(auth()->user()->iLikeIt($idea->id))
-                                    <x-like></x-like>
-                                    <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}&nbsp;&nbsp;&nbsp;Te gusta</span>
-                                    @else
                                     <x-like></x-like>
                                     <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}</span>
-                                    @endif
                                 </small>
-                            </form>
+                            @endcannot
                         </div>
                     </div>
                 @empty

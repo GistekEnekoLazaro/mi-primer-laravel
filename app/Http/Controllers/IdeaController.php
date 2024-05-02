@@ -118,9 +118,9 @@ class IdeaController extends Controller
         }
     }
 
-    public function syncronizeLikesIndex(Request $request, $idea_id): RedirectResponse
+    public function syncronizeLikesIndex(Request $request, Idea $valiidea, $idea_id): RedirectResponse
     {
-        if ($request->user()->cannot('like', $idea_id)) {
+        if ($request->user()->cannot('like', $valiidea)) {
             return redirect(route('idea.index', $idea_id))->with('error', 'No puedes darte me gusta a ti mismo');
         } else {
             $idea = Idea::where('id',$idea_id)->first();
