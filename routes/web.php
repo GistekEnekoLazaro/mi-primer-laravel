@@ -23,8 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/ideas/actualizar/{idea}', [IdeaController::class, 'update'])->name('idea.update');
     Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('idea.show');
     Route::delete('/ideas/{idea}', [IdeaController::class, 'delete'])->name('idea.delete');
-    Route::put('/ideas/{idea}', [IdeaController::class, 'syncronizeLikes'])->name('idea.delete');
-    Route::put('/ideas/{idea}', [IdeaController::class, 'syncronizeLikesIndex'])->name('idea.like');
+    Route::put('/ideas/darlike/{idea}', [IdeaController::class, 'syncronizeLikes'])->name('idea.like');
+    Route::put('/ideas/{idea}', [IdeaController::class, 'syncronizeLikesIndex'])->name('idea.likeIndex');
 
 });
 

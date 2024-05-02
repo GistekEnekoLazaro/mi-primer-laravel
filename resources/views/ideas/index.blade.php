@@ -53,7 +53,7 @@
                                 @endauth
                             </div>
                             <p class="mt-3 text-lg text-gray-900 dark:text-gray-100">{{ $idea->titulo }}</p>
-                            <form method="POST" action="{{ route('idea.like', $idea->id) }}">
+                            <form method="POST" action="{{ route('idea.likeIndex', $idea->id) }}">
                                 @csrf
                                 @method('put')
                                 <button>
