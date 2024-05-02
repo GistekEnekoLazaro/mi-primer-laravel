@@ -58,8 +58,13 @@
                                 @method('put')
                                 <button>
                                 <small class="flex mt-3 text-sm text-gray-400">
+                                    @if(auth()->user()->iLikeIt($idea->id))
+                                    <x-like></x-like>
+                                    <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}&nbsp;&nbsp;&nbsp;Te gusta</span>
+                                    @else
                                     <x-like></x-like>
                                     <span class="ml-2">&nbsp;&nbsp;{{ $idea -> likes }}</span>
+                                    @endif
                                 </small>
                             </form>
                         </div>
