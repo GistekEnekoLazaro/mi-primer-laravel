@@ -23,9 +23,9 @@ class IdeaController extends Controller
         'max' => 'El campo :attribute no debe ser mayor a :max caracteres.',
     ];
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $ideas = Idea::get();
+        $ideas = Idea::theBest($request->filtro)->myIdeas($request->filtro)->get();
         return view('ideas.index', ['ideas' => $ideas]);
     }
 

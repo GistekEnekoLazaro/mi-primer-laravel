@@ -21,8 +21,10 @@
             @endif
             <div class="mb-4 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 space-x-8 text-gray-900 dark:text-gray-100s">
-                    <a href="{{route('idea.create')}}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Crear</a>
-                    <a href="#" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Las mejores</a>
+                    <a href="{{ route('idea.create') }}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Crear</a>
+                    <a href="{{ route('idea.index') }}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Todas las ideas</a>
+                    <a href="{{ route('idea.index', ['filtro'=>'mis-ideas']) }}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Mis ideas</a>
+                    <a href="{{ route('idea.index', ['filtro'=>'las-mejores']) }}" class="px-4 py-4 text-sm font-semibold tracking-widest text-gray-700 uppercase bg-white border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">Las mejores</a>
                 </div>
             </div>
             <div class="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
