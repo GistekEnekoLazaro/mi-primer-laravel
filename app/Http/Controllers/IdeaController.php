@@ -6,8 +6,7 @@ use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\Ideas;
-use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 
 class IdeaController extends Controller
@@ -45,15 +44,19 @@ class IdeaController extends Controller
             'descripcion' => $validated['descripcion'],
         ]);
 
+        $usuario = auth()?->user();
+
         session()->flash('message', 'Idea creada correctamente');
+
+        Log::info('[IdeaController] store() - El usuario ['.$usuario?->id.'] '.$usuario?->name.' ha creado la idea con ID '.Idea::latest()->first()->id);
 
         return redirect()->route('idea.index');
     }
 
-    public function edit(Request $request,Idea $idea): View
+    public function edit(Request $request,Idea $idea)
     {
         if ($request->user()->cannot('update', $idea)) {
-            abort(403);
+            return redirect(route('idea.index', $idea))->with('error', 'No puedes editar una idea que no es tuya');
         }
 
         return view('ideas.create_or_edit')->with('idea', $idea);
@@ -71,6 +74,10 @@ class IdeaController extends Controller
 
         session()->flash('message', 'Idea editada correctamente');
 
+        $usuario = auth()?->user();
+
+        Log::info('[IdeaController] update() - El usuario ['.$usuario?->id.'] '.$usuario?->name.' ha editado la idea con ID '.Idea::latest()->first()->id);
+
         return redirect(route('idea.index'));
     }
 
@@ -82,12 +89,18 @@ class IdeaController extends Controller
     public function delete(Request $request,Idea $idea): RedirectResponse
     {
         if ($request->user()->cannot('delete', $idea)) {
-            abort(403);
+            return redirect(route('idea.index', $idea))->with('error', 'No puedes borrar una idea que no es tuya');
         }
+
+        $id_idea = Idea::latest()->first()->id;
 
         $idea->delete();
 
         session()->flash('message', 'Idea borrada correctamente');
+
+        $usuario = auth()?->user();
+
+        Log::info('[IdeaController] delete() - El usuario ['.$usuario?->id.'] '.$usuario?->name.' ha borrado la idea con ID '.$id_idea);
 
         return redirect()->route('idea.index');
     }
