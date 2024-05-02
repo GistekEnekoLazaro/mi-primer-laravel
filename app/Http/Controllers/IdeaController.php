@@ -10,10 +10,22 @@ use Illuminate\View\View;
 
 class IdeaController extends Controller
 {
+
+    private array $rules = [
+        'titulo' => 'required|string|max:100',
+        'descripcion' => 'required|string|max:300',
+    ];
+
+    private array $errorMessages = [
+        'required' => 'El campo :attribute es obligatorio.',
+        'string' => 'Caracteres no validos.',
+        'max' => 'El campo :attribute no debe ser mayor a :max caracteres.',
+    ];
+
     public function index(): View
     {
         $ideas = Idea::get();
-        return view('ideas.index',['ideas' => $ideas]);
+        return view('ideas.index', ['ideas' => $ideas]);
     }
 
     public function create(): View
@@ -23,10 +35,7 @@ class IdeaController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:100',
-            'descripcion' => 'required|string|max:300',
-        ]);
+        $validated = $request->validate($this->rules, $this->errorMessages);
 
         Idea::create([
             'user_id' => auth()->user()->id, //$request->user()->id
@@ -46,10 +55,7 @@ class IdeaController extends Controller
 
     public function update(Request $request, Idea $idea): RedirectResponse
     {
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:100',
-            'descripcion' => 'required|string|max:300',
-        ]);
+        $validated = $request->validate($this->rules, $this->errorMessages);
 
         $idea->update($validated);
 
@@ -68,7 +74,7 @@ class IdeaController extends Controller
         $idea->delete();
 
         session()->flash('message', 'Idea borrada correctamente');
-        
+
         return redirect()->route('idea.index');
     }
 }
