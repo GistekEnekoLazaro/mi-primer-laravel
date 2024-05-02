@@ -31,8 +31,10 @@ class IdeaController extends Controller
         Idea::create([
             'user_id' => auth()->user()->id, //$request->user()->id
             'titulo' => $validated['titulo'],
-            'descripcion' => $validated['description'],
+            'descripcion' => $validated['descripcion'],
         ]);
+
+        session()->flash('message', 'Idea creada correctamente');
 
         return redirect()->route('idea.index');
     }
@@ -51,6 +53,8 @@ class IdeaController extends Controller
 
         $idea->update($validated);
 
+        session()->flash('message', 'Idea editada correctamente');
+
         return redirect(route('idea.index'));
     }
 
@@ -62,6 +66,8 @@ class IdeaController extends Controller
     public function delete(Idea $idea): RedirectResponse
     {
         $idea->delete();
+
+        session()->flash('message', 'Idea borrada correctamente');
         
         return redirect()->route('idea.index');
     }
